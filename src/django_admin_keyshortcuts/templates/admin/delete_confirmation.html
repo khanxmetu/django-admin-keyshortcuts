@@ -1,0 +1,11 @@
+{% extends "admin/delete_confirmation.html" %}
+{% load static %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script src="{% static "admin/js/shortcuts_delete_confirmation.js" %}"></script>
+{% endblock %}
+
+{% block shortcuts %}
+  {% include "admin/delete_confirmation_shortcuts.html" %}
+{% endblock %}

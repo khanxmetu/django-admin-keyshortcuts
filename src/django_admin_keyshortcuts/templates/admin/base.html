@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrahead %}
+  {{ block.super }}
+  {% block extrahead_shortcuts %}
+    <link rel="stylesheet" href="{% static "admin/css/shortcuts.css" %}">
+    <script src="{% static "admin/js/shortcuts.js" %}" defer></script>
+  {% endblock %}
+{% endblock %}
+
+{% block footer %}
+  {{ block.super }}
+  {% block shortcuts %}
+    {% include "admin/shortcuts.html" %}
+  {% endblock %}
+{% endblock %}
