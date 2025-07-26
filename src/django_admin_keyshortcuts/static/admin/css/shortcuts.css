@@ -1,4 +1,4 @@
-kbd {
+#open-shortcuts kbd, .keyboard-shortcuts kbd {
   background-color: var(--body-bg);
   border-radius: 3px;
   border: 1px solid var(--border-color);
@@ -22,24 +22,24 @@ kbd {
   width: 40vw;
 }
 
-.dialog-heading {
+.keyboard-shortcuts .dialog-heading {
   align-items: center;
   display: flex;
   justify-content: space-between;
 }
 
-.dialog-heading h2 {
+.keyboard-shortcuts .dialog-heading h2 {
   margin: 0;
 }
 
-dialog h3 {
+.keyboard-shortcuts h3 {
   background: var(--header-bg);
   color: var(--header-color);
   margin: 0;
   padding: 0.5em 1em;
 }
 
-dialog button {
+.keyboard-shortcuts button {
   background: inherit;
   cursor: pointer;
   border: 0;
@@ -49,22 +49,31 @@ dialog button {
   height: 30px;
 }
 
-dialog ul {
-  list-style: none;
-  margin: 0;
+.keyboard-shortcuts dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
   padding: 0;
+  margin: 0;
 }
 
-dialog ul li {
-  align-items: center;
-  column-gap: 1em;
-  display: flex;
-  justify-content: space-between;
+.shortcut-description, .shortcut-keys {
   border-top: 1px solid var(--border-color);
   padding: 1em;
+  margin: 0;
 }
 
-#model-list-dialog-search {
-  margin: 0.5em 0em;
-  width: 12vw;
+.shortcut-keys {
+  text-align: right;
+}
+
+dt.shortcut-description {
+  font-weight: normal; /* Revert bold styling from base.css for dt */
+}
+
+#toggle-shortcuts {
+  margin-left: .5em;
+}
+
+#toggle-shortcuts:not(:checked) ~ section {
+  opacity: 0.5; /* gray out shortcuts sections when toggle is off */
 }
