@@ -1,6 +1,6 @@
 [project]
 name = "django-admin-keyshortcuts"
-version = "0.1.1"
+version = "0.1.2"
 description = "Keyboard shortcuts for Django Admin"
 readme = "README.md"
 authors = [
