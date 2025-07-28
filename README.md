@@ -2,7 +2,8 @@
 A Django package that adds keyboard shortcuts to the Django Admin interface for improved accessibility.  
 
 ## Demo
-A static preview of Django Admin with Keyboard Shortcuts is available at https://khanxmetu.github.io/django-admin-keyshortcuts-demo/
+A static preview of Django Admin with Keyboard Shortcuts is available at:  
+https://khanxmetu.github.io/django-admin-keyshortcuts-demo/
 
 ## Setup
 Install from pip:  
