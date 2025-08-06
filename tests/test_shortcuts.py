@@ -10,7 +10,7 @@ from .models import Paper
 
 
 class GlobalShortcuts:
-    SHOW_DIALOG = "?"
+    SHOW_DIALOG = "Shift+?"
     CLOSE_DIALOG = "Escape"
     GO_TO_INDEX = "g i"
 
@@ -50,8 +50,7 @@ class AdminKeyboardShorcutsTests(TestCase):
         response = self.client.get(reverse("test_admin_keyboard_shortcuts:index"))
         self.assertContains(
             response,
-            '<button id="open-shortcuts"'
-            f' aria-keyshortcuts="{GlobalShortcuts.SHOW_DIALOG}">',
+            f'<button id="open-shortcuts" data-hotkey="{GlobalShortcuts.SHOW_DIALOG}">',
         )
         self.assertContains(
             response, '<dialog class="keyboard-shortcuts" id="shortcuts-dialog">'
@@ -63,8 +62,7 @@ class AdminKeyboardShorcutsTests(TestCase):
         response = self.client.get(reverse("test_admin_keyboard_shortcuts:login"))
         self.assertNotContains(
             response,
-            '<button id="open-shortcuts"'
-            f' aria-keyshortcuts="{GlobalShortcuts.SHOW_DIALOG}">',
+            f'<button id="open-shortcuts" data-hotkey="{GlobalShortcuts.SHOW_DIALOG}">',
         )
         self.assertNotContains(
             response, '<dialog class="keyboard-shortcuts" id="shortcuts-dialog">'

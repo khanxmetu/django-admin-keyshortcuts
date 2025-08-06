@@ -1,11 +1,6 @@
 {% extends "admin/change_form.html" %}
 {% load static %}
 
-{% block extrahead %}
-  {{ block.super }}
-  <script src="{% static "admin/js/shortcuts_changeform.js" %}"></script>
-{% endblock %}
-
 {% block shortcuts %}
   {% include "admin/change_form_shortcuts.html" %}
 {% endblock %}
