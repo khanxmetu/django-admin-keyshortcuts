@@ -44,29 +44,19 @@
         actionsSelect.focus();
     }
 
-    function handleKeyDown(event) {
-        if (window.shortcutsEnabled === 'false') { return; }
-        if (window.isFocusedTextField()) { return; }
-        switch (event.code) {
-        case "KeyK":
-            focusPreviousCheckbox();
-            break;
-        case "KeyJ":
-            focusNextCheckbox();
-            break;
-        case "KeyX":
-            selectCheckbox();
-            break;
-        case "KeyA":
-            selectActionsSelect();
-            break;
-        }
+    function bindShortcutActionsToButtons() {
+        document.getElementById("keyshortcut-prev-btn").addEventListener("click", focusPreviousCheckbox);
+        document.getElementById("keyshortcut-next-btn").addEventListener("click", focusNextCheckbox);
+        document.getElementById("keyshortcut-select-btn").addEventListener("click", selectCheckbox);
+        document.getElementById("keyshortcut-select-actions-btn").addEventListener("click", selectActionsSelect);
     }
 
     if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", setUpShortcuts);
+        document.addEventListener("DOMContentLoaded", bindShortcutActionsToButtons);
     } else {
         setUpShortcuts();
+        bindShortcutActionsToButtons();
     }
-    document.addEventListener("keydown", handleKeyDown);
 }
+
