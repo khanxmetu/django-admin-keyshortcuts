@@ -450,5 +450,6 @@ class SeleniumTests(AdminSeleniumTestCase):
         with self.wait_page_loaded():
             self.perform_shortcut(ChangeFormShortcuts.DELETE)
         # Confirm delete
-        self.perform_shortcut(DeleteConfirmationShortcuts.CONFIRM_DELETE)
+        with self.wait_page_loaded():
+            self.perform_shortcut(DeleteConfirmationShortcuts.CONFIRM_DELETE)
         self.assertEqual(Paper.objects.count(), 0)
