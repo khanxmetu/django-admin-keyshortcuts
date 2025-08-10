@@ -50,6 +50,12 @@ export default [
         }
     },
     {
+        files: ["src/django_admin_keyshortcuts/static/admin/js/vendor/hotkey/*.js", "src/django_admin_keyshortcuts/static/admin/js/shortcuts.js"],
+        languageOptions: {
+            sourceType: "module"
+        }
+    },
+    {
         ignores: [
             "**/*.min.js",
             "**/vendor/**/*.js",

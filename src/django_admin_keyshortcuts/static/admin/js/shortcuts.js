@@ -1,15 +1,17 @@
+import { install, uninstall } from './vendor/hotkey/hotkey.js';
+
 'use strict';
 {
     let shortcutsEnabled = localStorage.getItem('django.admin.shortcutsEnabled') || 'true';
 
     function installShortcuts() {
         for (const el of document.querySelectorAll('[data-hotkey]')) {
-            hotkey.install(el);
+            install(el);
         }
     }
     function uninstallShortcuts() {
         for (const el of document.querySelectorAll('[data-hotkey]')) {
-            hotkey.uninstall(el);
+            uninstall(el);
         }
     }
 

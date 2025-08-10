@@ -5,8 +5,7 @@
   {{ block.super }}
   {% block extrahead_shortcuts %}
     <link rel="stylesheet" href="{% static "admin/css/shortcuts.css" %}">
-    <script src="{% static "admin/js/vendor/hotkey/hotkey.js" %}"></script>
-    <script src="{% static "admin/js/shortcuts.js" %}" defer></script>
+    <script type="module" src="{% static "admin/js/shortcuts.js" %}"></script>
   {% endblock %}
 {% endblock %}
 
