@@ -28,3 +28,9 @@ def get_shortcuts():
             "cancel_delete": (_("Cancel deletion"), "Alt+n"),
         },
     }
+
+
+@register.filter
+def shortcut_format_kbd(value):
+    combos = value.split()
+    return " ".join([f"<kbd>{combo}</kbd>" for combo in combos])
