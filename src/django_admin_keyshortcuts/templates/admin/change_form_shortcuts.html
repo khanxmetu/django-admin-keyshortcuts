@@ -11,7 +11,7 @@
     <dl>
       {% for shortcut in shortcuts.changeform.values %}
         <dt class="shortcut-description">{{ shortcut.0 }}</dt>
-        <dd class="shortcut-keys">{{ shortcut.1 | shortcut_format_kbd | safe }}</dd>
+        <dd class="shortcut-keys">{% shortcut_format_kbd shortcut.1 %}</dd>
       {% endfor %}
     </dl>
   </section>

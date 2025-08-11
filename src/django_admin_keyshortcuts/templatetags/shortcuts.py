@@ -1,4 +1,7 @@
+import re
+
 from django import template
+from django.utils.html import format_html_join
 from django.utils.translation import gettext as _
 
 register = template.Library()
@@ -30,7 +33,23 @@ def get_shortcuts():
     }
 
 
-@register.filter
-def shortcut_format_kbd(value):
-    combos = value.split()
-    return " ".join([f"<kbd>{combo}</kbd>" for combo in combos])
+@register.simple_tag(takes_context=True)
+def shortcut_format_kbd(context, keyshortcut):
+    """Render keyshortcuts like 'Ctrl+S Alt+Shift+X' into HTML kbd elements."""
+    user_agent = context["request"].headers.get("User-Agent", "")
+    is_mac = re.search(r"Mac|iPod|iPhone|iPad", user_agent)
+    labels = {
+        "Alt": "⌥" if is_mac else "Alt",
+        "Mod": "⌘" if is_mac else "Ctrl",
+        "Ctrl": "^" if is_mac else "Ctrl",
+    }
+
+    def render_combo(combo):
+        # Split by '+', map labels and wrap each key in <kbd>
+        keys = [labels.get(key, key) for key in combo.split("+")]
+        return format_html_join("+", "<kbd>{}</kbd>", [(key,) for key in keys])
+
+    # Split by ' ', then render each combo
+    return format_html_join(
+        " ", "{}", [(render_combo(combo),) for combo in keyshortcut.split()]
+    )
