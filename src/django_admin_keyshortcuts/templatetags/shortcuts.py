@@ -21,9 +21,9 @@ def get_shortcuts():
             "focus_actions_dropdown": (_("Focus actions dropdown"), "a"),
         },
         "changeform": {
-            "save": (_("Save"), "Alt+s"),
-            "save_and_add_another": (_("Save and add another"), "Alt+a"),
-            "save_and_continue": (_("Save and continue editing"), "Alt+c"),
+            "save": (_("Save"), "Mod+s"),
+            "save_and_add_another": (_("Save and add another"), "Mod+Shift+S"),
+            "save_and_continue": (_("Save and continue editing"), "Mod+Alt+s"),
             "delete": (_("Delete"), "Alt+d"),
         },
         "delete_confirmation": {

@@ -22,20 +22,21 @@ INSTALLED_APPS = (
 
 ## Usage
 The following is a list of supported shortcuts
-| Description                   | Shortcut | Scope              |
-|------------------------------|----------|--------------------|
-| Show shortcuts help dialog             | ?        | Global             |
-| Go to the site index         | g i      | Global             |
-| Select previous row for action | k      | Change List        |
-| Select next row for action   | j        | Change List        |
-| Toggle row selection         | x        | Change List        |
-| Focus actions dropdown       | a        | Change List        |
-| Save and go to change list   | Alt+s    | Change Form        |
-| Save and add another         | Alt+a    | Change Form        |
-| Save and continue editing    | Alt+c    | Change Form        |
-| Delete                       | Alt+d    | Change Form        |
-| Confirm deletion             | Alt+y    | Delete Confirmation|
-| Cancel deletion              | Alt+n    | Delete Confirmation|
+| Description                    | Shortcut (Windows) | Shortcut (MacOS) | Scope               |
+|--------------------------------|--------------------|------------------|---------------------|
+| Show shortcuts help dialog     | ?                  | ?                | Global              |
+| Go to the site index           | g i                | g i              | Global              |
+| Select previous row for action | k                  | k                | Change List         |
+| Select next row for action     | j                  | j                | Change List         |
+| Toggle row selection           | x                  | x                | Change List         |
+| Focus actions dropdown         | a                  | a                | Change List         |
+| Save and go to change list     | Ctrl+s             | ⌘+s              | Change Form         |
+| Save and add another           | Ctrl+Shift+S       | ⌘+Shift+S        | Change Form         |
+| Save and continue editing      | Ctrl+Alt+s         | ⌘+⌥+s            | Change Form         |
+| Delete                         | Alt+d              | ⌥+d              | Change Form         |
+| Confirm deletion               | Alt+y              | ⌥+y              | Delete Confirmation |
+| Cancel deletion                | Alt+n              | ⌥+n              | Delete Confirmation |
+
 
 ## About
 The **django-admin-keyshortcuts** package is being developed with the goal of eventually merging its functionality into Django core.  

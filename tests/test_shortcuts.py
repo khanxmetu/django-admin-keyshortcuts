@@ -23,9 +23,9 @@ class ChangeListShortcuts:
 
 
 class ChangeFormShortcuts:
-    SAVE = "Alt+s"
-    SAVE_AND_CONTINUE = "Alt+c"
-    SAVE_AND_ADD_ANOTHER = "Alt+a"
+    SAVE = "Ctrl+s"
+    SAVE_AND_ADD_ANOTHER = "Ctrl+Shift+S"
+    SAVE_AND_CONTINUE = "Ctrl+Alt+s"
     DELETE = "Alt+d"
 
 
