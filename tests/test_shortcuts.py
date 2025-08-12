@@ -1,3 +1,4 @@
+import platform
 from contextlib import contextmanager
 
 from django.contrib.admin.tests import AdminSeleniumTestCase
@@ -23,9 +24,9 @@ class ChangeListShortcuts:
 
 
 class ChangeFormShortcuts:
-    SAVE = "Ctrl+s"
-    SAVE_AND_ADD_ANOTHER = "Ctrl+Shift+S"
-    SAVE_AND_CONTINUE = "Ctrl+Alt+s"
+    SAVE = "Mod+s"
+    SAVE_AND_ADD_ANOTHER = "Mod+Shift+S"
+    SAVE_AND_CONTINUE = "Mod+Alt+s"
     DELETE = "Alt+d"
 
 
@@ -73,12 +74,26 @@ class AdminKeyboardShorcutsTests(TestCase):
 
     def test_shortcuts_dialog_descriptions(self):
         response = self.client.get(reverse("test_admin_keyboard_shortcuts:index"))
+
+        self.assertEqual(GlobalShortcuts.SHOW_DIALOG, "Shift+?")
         self.assertContains(
             response,
             '<dt class="shortcut-description">Show this dialog</dt>'
-            f'<dd class="shortcut-keys"><kbd>{GlobalShortcuts.SHOW_DIALOG}</kbd></dd>',
+            '<dd class="shortcut-keys"><kbd>Shift</kbd>+<kbd>?</kbd></dd>',
             html=True,
         )
+
+    def test_shortcuts_dialog_descriptions_for_mac(self):
+        self.client.defaults["HTTP_USER_AGENT"] = (
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+        )
+        response = self.client.get(
+            reverse("test_admin_keyboard_shortcuts:tests_paper_add")
+        )
+
+        self.assertEqual(ChangeFormShortcuts.SAVE, "Mod+s")
+        self.assertContains(response, "<kbd>⌘</kbd>+<kbd>s</kbd>")
 
 
 class SeleniumTests(AdminSeleniumTestCase):
@@ -104,6 +119,8 @@ class SeleniumTests(AdminSeleniumTestCase):
         from selenium.webdriver.common.action_chains import ActionChains
         from selenium.webdriver.common.keys import Keys
 
+        is_mac = platform.system() == "Darwin"
+
         # split the shortcut keys string into list of list of keys
         # e.g. "Ctrl+S Alt+Shift+X" -> [["Ctrl", "S"], ["Alt", "Shift", "X"]]
         key_combos = [key_combo.split("+") for key_combo in shortcut.split(" ")]
@@ -114,11 +131,17 @@ class SeleniumTests(AdminSeleniumTestCase):
             "alt": Keys.ALT,
             "shift": Keys.SHIFT,
             "escape": Keys.ESCAPE,
+            "mod": Keys.META if is_mac else Keys.CONTROL,
         }
         key_combos = [
             [special_keys.get(key.lower(), key) for key in combo]
             for combo in key_combos
         ]
+
+        # Temporary workaround to remove focus from textarea/input fields.
+        # Currently, Github hotkey prevents shortcuts
+        # from triggering when focused on textareas.
+        self.selenium.execute_script("document.activeElement.blur();")
 
         # perform the key combinations
         actions = ActionChains(self.selenium)
