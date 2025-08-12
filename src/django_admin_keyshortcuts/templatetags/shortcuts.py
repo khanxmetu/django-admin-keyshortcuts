@@ -35,21 +35,32 @@ def get_shortcuts():
 
 @register.simple_tag(takes_context=True)
 def shortcut_format_kbd(context, keyshortcut):
-    """Render keyshortcuts like 'Ctrl+S Alt+Shift+X' into HTML kbd elements."""
-    user_agent = context["request"].headers.get("User-Agent", "")
-    is_mac = re.search(r"Mac|iPod|iPhone|iPad", user_agent)
-    labels = {
-        "Alt": "⌥" if is_mac else "Alt",
-        "Mod": "⌘" if is_mac else "Ctrl",
-        "Ctrl": "^" if is_mac else "Ctrl",
-    }
+    """Render keyshortcuts like "Ctrl+S Alt+Shift+X" into HTML kbd elements
+    with proper key labels.
+    """
 
-    def render_combo(combo):
-        # Split by '+', map labels and wrap each key in <kbd>
-        keys = [labels.get(key, key) for key in combo.split("+")]
+    def get_modifier_key_labels_from_request(request):
+        """Get modifier key labels based on the user's OS."""
+        user_agent = request.headers.get("User-Agent", "")
+        is_mac = re.search(r"Mac|iPod|iPhone|iPad", user_agent)
+
+        labels = {
+            "Alt": "⌥" if is_mac else "Alt",
+            "Mod": "⌘" if is_mac else "Ctrl",
+            "Ctrl": "^" if is_mac else "Ctrl",
+        }
+        return labels
+
+    def render_combo(combo, modifier_labels):
+        """Split combo string by "+", map modifier labels and wrap each key in <kbd>."""
+        keys = [modifier_labels.get(key, key) for key in combo.split("+")]
         return format_html_join("+", "<kbd>{}</kbd>", [(key,) for key in keys])
 
-    # Split by ' ', then render each combo
+    modifier_labels = get_modifier_key_labels_from_request(context["request"])
+
+    # Split the shortcut sequence by " ", then render each shortcut combo
     return format_html_join(
-        " ", "{}", [(render_combo(combo),) for combo in keyshortcut.split()]
+        " ",
+        "{}",
+        [(render_combo(combo, modifier_labels),) for combo in keyshortcut.split()],
     )
