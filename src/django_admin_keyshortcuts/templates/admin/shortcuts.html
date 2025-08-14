@@ -1,9 +1,12 @@
-{% load i18n %}
+{% load i18n shortcuts %}
+{% get_shortcuts as shortcuts %}
 
-<button id="open-shortcuts" aria-keyshortcuts="?">
-  <kbd>?</kbd>
-</button>
-<a id="admin_index_link" href="{% url 'admin:index' %}" aria-keyshortcuts="g i" hidden></a>
+{% block shortcut_buttons %}
+  <button id="open-shortcuts" data-hotkey="{{ shortcuts.global.show_dialog.1 }}">
+    <kbd>?</kbd>
+  </button>
+  <a id="admin_index_link" href="{% url 'admin:index' %}" data-hotkey="{{ shortcuts.global.go_to_index.1 }}" hidden></a>
+{% endblock %}
 
 <dialog class="keyboard-shortcuts" id="shortcuts-dialog">
   <div class="dialog-heading">
@@ -17,11 +20,10 @@
   <section>
     <h3>{% translate "Global" %}</h3>
     <dl>
-      <dt class="shortcut-description">{% translate "Show this dialog" %}</dt>
-      <dd class="shortcut-keys"><kbd>?</kbd></dd>
-
-      <dt class="shortcut-description">{% translate "Go to the site index" %}</dt>
-      <dd class="shortcut-keys"><kbd>g</kbd> <kbd>i</kbd></dd>
+      {% for shortcut in shortcuts.global.values %}
+        <dt class="shortcut-description">{{ shortcut.0 }}</dt>
+        <dd class="shortcut-keys">{% shortcut_format_kbd shortcut.1 %}</dd>
+      {% endfor %}
     </dl>
   </section>
   {% block extra_shortcuts %}{% endblock %}
