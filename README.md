@@ -22,7 +22,7 @@ INSTALLED_APPS = (
 
 ## Usage
 The following is a list of supported shortcuts
-| Description                    | Shortcut (Windows) | Shortcut (MacOS) | Scope               |
+| Description                    | Shortcut (Windows/Linux) | Shortcut (MacOS) | Scope               |
 |--------------------------------|--------------------|------------------|---------------------|
 | Show shortcuts help dialog     | ?                  | ?                | Global              |
 | Go to the site index           | g i                | g i              | Global              |
