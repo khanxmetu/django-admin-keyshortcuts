@@ -19,16 +19,20 @@ def get_shortcuts():
             "focus_next_row": (_("Focus next row"), "j"),
             "toggle_row_selection": (_("Toggle row selection"), "x"),
             "focus_actions_dropdown": (_("Focus actions dropdown"), "a"),
+            "focus_search": (_("Focus search field"), "/"),
+            "toggle_sidebar": (_("Toggle sidebar"), "["),
         },
         "changeform": {
             "save": (_("Save"), "Mod+s"),
             "save_and_add_another": (_("Save and add another"), "Mod+Shift+S"),
             "save_and_continue": (_("Save and continue editing"), "Mod+Alt+s"),
             "delete": (_("Delete"), "Alt+d"),
+            "toggle_sidebar": (_("Toggle sidebar"), "["),
         },
         "delete_confirmation": {
             "confirm_delete": (_("Confirm deletion"), "Alt+y"),
             "cancel_delete": (_("Cancel deletion"), "Alt+n"),
+            "toggle_sidebar": (_("Toggle sidebar"), "["),
         },
     }
 

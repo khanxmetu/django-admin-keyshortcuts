@@ -14,6 +14,7 @@ class GlobalShortcuts:
     SHOW_DIALOG = "Shift+?"
     CLOSE_DIALOG = "Escape"
     GO_TO_INDEX = "g i"
+    TOGGLE_SIDEBAR = "["
 
 
 class ChangeListShortcuts:
@@ -21,6 +22,7 @@ class ChangeListShortcuts:
     FOCUS_NEXT_ROW = "j"
     TOGGLE_ROW_SELECTION = "x"
     FOCUS_ACTIONS_DROPDOWN = "a"
+    FOCUS_SEARCH = "/"
 
 
 class ChangeFormShortcuts:
@@ -254,6 +256,30 @@ class SeleniumTests(AdminSeleniumTestCase):
             self.live_server_url + reverse("test_admin_keyboard_shortcuts:index"),
         )
 
+    def test_shortcut_global_toggle_sidebar(self):
+        from selenium.webdriver.common.by import By
+
+        l1 = Language.objects.create(iso="l1")
+
+        pages = [
+            reverse("test_admin_keyboard_shortcuts:tests_language_changelist"),
+            reverse("test_admin_keyboard_shortcuts:tests_language_add"),
+            reverse(
+                "test_admin_keyboard_shortcuts:tests_language_delete", args=(l1.pk,)
+            ),
+        ]
+        for page in pages:
+            self.selenium.get(self.live_server_url + page)
+            sidebar = self.selenium.find_element(By.ID, "nav-sidebar")
+
+            visibility = sidebar.is_displayed()
+            self.perform_shortcut(GlobalShortcuts.TOGGLE_SIDEBAR)
+            self.assertEqual(sidebar.is_displayed(), not visibility)
+
+            visibility = sidebar.is_displayed()
+            self.perform_shortcut(GlobalShortcuts.TOGGLE_SIDEBAR)
+            self.assertEqual(sidebar.is_displayed(), not visibility)
+
     def test_shortcut_changelist_focus_next_row(self):
         from selenium.webdriver.common.by import By
 
@@ -369,6 +395,18 @@ class SeleniumTests(AdminSeleniumTestCase):
 
         self.perform_shortcut(ChangeListShortcuts.FOCUS_ACTIONS_DROPDOWN)
         self.assertEqual(self.selenium.switch_to.active_element, actions_dropdown)
+
+    def test_shortcut_changelist_focus_search(self):
+        from selenium.webdriver.common.by import By
+
+        self.selenium.get(
+            self.live_server_url
+            + reverse("test_admin_keyboard_shortcuts:tests_language_changelist")
+        )
+
+        searchbar = self.selenium.find_element(By.ID, "searchbar")
+        self.perform_shortcut(ChangeListShortcuts.FOCUS_SEARCH)
+        self.assertEqual(self.selenium.switch_to.active_element, searchbar)
 
     def test_shortcut_changeform_save(self):
         from selenium.webdriver.common.by import By

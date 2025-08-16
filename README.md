@@ -26,10 +26,12 @@ The following is a list of supported shortcuts
 |--------------------------------|--------------------|------------------|---------------------|
 | Show shortcuts help dialog     | ?                  | ?                | Global              |
 | Go to the site index           | g i                | g i              | Global              |
+| Toggle sidebar                 | [                  | [                | Global (where it exists) |
 | Select previous row for action | k                  | k                | Change List         |
 | Select next row for action     | j                  | j                | Change List         |
 | Toggle row selection           | x                  | x                | Change List         |
 | Focus actions dropdown         | a                  | a                | Change List         |
+| Focus search field             | /                  | /                | Change List         |
 | Save and go to change list     | Ctrl+s             | ⌘+s              | Change Form         |
 | Save and add another           | Ctrl+Shift+S       | ⌘+Shift+S        | Change Form         |
 | Save and continue editing      | Ctrl+Alt+s         | ⌘+⌥+s            | Change Form         |
