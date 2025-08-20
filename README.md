@@ -39,7 +39,46 @@ The following is a list of supported shortcuts
 | Confirm deletion               | Alt+y              | ⌥+y              | Delete Confirmation |
 | Cancel deletion                | Alt+n              | ⌥+n              | Delete Confirmation |
 
+## Adding Custom Shortcuts
+This package uses the [GitHub Hotkey](https://github.com/github/hotkey) library for handling shortcuts. You can add new ones by extending templates:
+1. In the admin template, locate the element you want triggered by the shortcut.
+2. Extend the template and add data-hotkey attribute to the target element, e.g. `data-hotkey="Mod+s"`. See [hotkey string format](https://github.com/github/hotkey?tab=readme-ov-file#hotkey-string-format) for supported modifier and key combinations.
+3. Document the shortcut in the help dialog.
 
+**View-specific (per page) shortcuts:** Extend `change_list_shortcuts`, `change_form_shortcuts`, or `delete_confirmation_shortcuts`.  
+Example:
+```html
+{% extends "admin/change_list_shortcuts.html" %}
+{% load shortcuts %}
+{% block extra_shortcuts %}
+{{ block.super }}
+  <section>
+    <h3>Custom Shortcuts</h3>
+    <dl>
+        <dt class="shortcut-description">A Custom Shortcut</dt>
+        <dd class="shortcut-keys">{% shortcut_format_kbd "Mod+s" %}</dd>
+    </dl>
+</section>
+{% endblock %}
+```
+**Global shortcuts:**  
+Example:
+```html
+{% extends "admin/shortcuts.html" %}
+{% load shortcuts %}
+{% block global_shortcuts %}
+  {{ block.super }}
+  <section>
+    <h3>Custom Shortcuts</h3>
+    <dl>
+      <dt class="shortcut-description">A Custom Shortcut</dt>
+      <dd class="shortcut-keys">{% shortcut_format_kbd "Mod+S" %}</dd>
+    </dl>
+  </section>
+{% endblock %}
+``` 
+
+> **Tip:** Use the Mod key (⌘ on macOS, Ctrl on Windows/Linux). It ensures shortcuts are OS-independent and automatically map to the correct key per platform.
 ## About
 The **django-admin-keyshortcuts** package is being developed with the goal of eventually merging its functionality into Django core.  
 This package has been undergoing refinements with respect to [GSoC 2025: Keyboard Shortcuts Specification](https://docs.google.com/document/d/1sFyl53B4IPWpYX7Q0vJYaNiCaJbe3Ym3_m1Dgk_gmr8/)
