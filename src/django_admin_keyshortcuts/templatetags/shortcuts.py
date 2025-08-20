@@ -9,6 +9,10 @@ register = template.Library()
 
 @register.simple_tag
 def get_shortcuts():
+    """
+    Returns a dictionary of keyboard shortcuts for use in the help dialog
+    and shortcut handling.
+    """
     return {
         "global": {
             "show_dialog": (_("Show this dialog"), "Shift+?"),
@@ -39,8 +43,13 @@ def get_shortcuts():
 
 @register.simple_tag(takes_context=True)
 def shortcut_format_kbd(context, keyshortcut):
-    """Render keyshortcuts like "Ctrl+S Alt+Shift+X" into HTML kbd elements
+    """Transforms keyshortcut string into HTML kbd elements
     with proper key labels.
+
+    "Mod+S" becomes "<kbd>Ctrl</kbd>+<kbd>S</kbd>" on Windows/Linux
+    and "<kbd>⌘</kbd>+<kbd>S</kbd>" on macOS.
+
+    "g i" becomes "<kbd>g</kbd> <kbd>i</kbd>"
     """
 
     def get_modifier_key_labels_from_request(request):
