@@ -9,7 +9,7 @@ https://khanxmetu.github.io/django-admin-keyshortcuts-demo/
 Install from pip:  
 `pip install django-admin-keyshortcuts`
 
-then add `django_admin_keyshortctus` before `django.contrib.admin` in your `INSTALLED_APPS`:
+then add `django_admin_keyshortcuts` before `django.contrib.admin` in your `INSTALLED_APPS`:
 
 ```
 INSTALLED_APPS = (
