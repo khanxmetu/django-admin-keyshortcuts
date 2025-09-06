@@ -22,6 +22,7 @@ def get_shortcuts():
             "focus_prev_row": (_("Focus previous row"), "k"),
             "focus_next_row": (_("Focus next row"), "j"),
             "toggle_row_selection": (_("Toggle row selection"), "x"),
+            "open_focused_row": (_("Open focused row"), "o"),
             "focus_actions_dropdown": (_("Focus actions dropdown"), "a"),
             "focus_search": (_("Focus search field"), "/"),
             "toggle_sidebar": (_("Toggle sidebar"), "["),

@@ -1,41 +1,53 @@
 'use strict';
 {
-    let checkboxes = null;
-    let currentCheckbox = null;
+    let rows = null;
+    let currentRow = null;
 
     function setUpShortcuts() {
-        checkboxes = Array.from(
-            document.querySelectorAll("#action-toggle, .action-select")
-        );
+        rows = Array.from(document.querySelectorAll("#result_list thead tr, #result_list tbody tr"));
+        // Let rows receive programmatic focus
+        rows.forEach(row => {
+            row.setAttribute("tabindex", "-1");
+        });
     }
 
-    function focusPreviousCheckbox() {
-        if (!checkboxes.length) {
+    function focusPreviousRow() {
+        if (!rows.length) {
             return;
         }
-        if (!currentCheckbox || currentCheckbox === checkboxes[0]) {
-            currentCheckbox = checkboxes[checkboxes.length - 1];
+        if (!currentRow || currentRow === rows[0]) {
+            currentRow = rows[rows.length - 1];
         } else {
-            currentCheckbox = checkboxes[checkboxes.indexOf(currentCheckbox) - 1];
+            currentRow = rows[rows.indexOf(currentRow) - 1];
         }
-        currentCheckbox.focus();
+        currentRow.focus();
     }
 
-    function focusNextCheckbox() {
-        if (!checkboxes.length) {
+    function focusNextRow() {
+        if (!rows.length) {
             return;
         }
-        if (!currentCheckbox || currentCheckbox === checkboxes[checkboxes.length - 1]) {
-            currentCheckbox = checkboxes[0];
+        if (!currentRow || currentRow === rows[rows.length - 1]) {
+            currentRow = rows[0];
         } else {
-            currentCheckbox = checkboxes[checkboxes.indexOf(currentCheckbox) + 1];
+            currentRow = rows[rows.indexOf(currentRow) + 1];
         }
-        currentCheckbox.focus();
+        currentRow.focus();
     }
 
     function selectCheckbox() {
-        if (currentCheckbox) {
+        if (currentRow) {
+            const currentCheckbox = currentRow.querySelector("#action-toggle, .action-select");
             currentCheckbox.click();
+        }
+    }
+
+    function openFocusedRow() {
+        if (currentRow) {
+            const firstLink = currentRow.querySelector("th a");
+            if (firstLink) {
+                window.location.href = firstLink.href;
+            }
         }
     }
 
@@ -45,9 +57,10 @@
     }
 
     function bindShortcutActionsToButtons() {
-        document.getElementById("keyshortcut-prev-btn").addEventListener("click", focusPreviousCheckbox);
-        document.getElementById("keyshortcut-next-btn").addEventListener("click", focusNextCheckbox);
+        document.getElementById("keyshortcut-prev-btn").addEventListener("click", focusPreviousRow);
+        document.getElementById("keyshortcut-next-btn").addEventListener("click", focusNextRow);
         document.getElementById("keyshortcut-select-btn").addEventListener("click", selectCheckbox);
+        document.getElementById("keyshortcut-open-btn").addEventListener("click", openFocusedRow);
         document.getElementById("keyshortcut-select-actions-btn").addEventListener("click", selectActionsSelect);
     }
 

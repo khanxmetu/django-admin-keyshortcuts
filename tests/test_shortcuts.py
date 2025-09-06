@@ -21,6 +21,7 @@ class ChangeListShortcuts:
     FOCUS_PREV_ROW = "k"
     FOCUS_NEXT_ROW = "j"
     TOGGLE_ROW_SELECTION = "x"
+    OPEN_FOCUSED_ROW = "o"
     FOCUS_ACTIONS_DROPDOWN = "a"
     FOCUS_SEARCH = "/"
 
@@ -291,28 +292,30 @@ class SeleniumTests(AdminSeleniumTestCase):
             + reverse("test_admin_keyboard_shortcuts:tests_language_changelist")
         )
 
-        action_toggle_checkbox = self.selenium.find_element(By.ID, "action-toggle")
-        l1_checkbox = self.selenium.find_element(
-            By.CSS_SELECTOR, "input[name='_selected_action'][value='l1']"
+        header_row = self.selenium.find_element(
+            By.CSS_SELECTOR, "#result_list > thead > tr"
         )
-        l2_checkbox = self.selenium.find_element(
-            By.CSS_SELECTOR, "input[name='_selected_action'][value='l2']"
+        l1_row = self.selenium.find_element(
+            By.CSS_SELECTOR, "#result_list > tbody > tr:nth-child(1)"
+        )
+        l2_row = self.selenium.find_element(
+            By.CSS_SELECTOR, "#result_list > tbody > tr:nth-child(2)"
         )
 
         # On first trigger, "focus next row" shortcut
-        # focuses Select all objects checkbox
+        # focuses header row
         self.perform_shortcut(ChangeListShortcuts.FOCUS_NEXT_ROW)
-        self.assertEqual(self.selenium.switch_to.active_element, action_toggle_checkbox)
+        self.assertEqual(self.selenium.switch_to.active_element, header_row)
 
         self.perform_shortcut(ChangeListShortcuts.FOCUS_NEXT_ROW)
-        self.assertEqual(self.selenium.switch_to.active_element, l1_checkbox)
+        self.assertEqual(self.selenium.switch_to.active_element, l1_row)
 
         self.perform_shortcut(ChangeListShortcuts.FOCUS_NEXT_ROW)
-        self.assertEqual(self.selenium.switch_to.active_element, l2_checkbox)
+        self.assertEqual(self.selenium.switch_to.active_element, l2_row)
 
         # Rolls over from last row/checkbox to the first row/checkbox
         self.perform_shortcut(ChangeListShortcuts.FOCUS_NEXT_ROW)
-        self.assertEqual(self.selenium.switch_to.active_element, action_toggle_checkbox)
+        self.assertEqual(self.selenium.switch_to.active_element, header_row)
 
     def test_shortcut_changelist_focus_previous_row(self):
         from selenium.webdriver.common.by import By
@@ -325,19 +328,19 @@ class SeleniumTests(AdminSeleniumTestCase):
             + reverse("test_admin_keyboard_shortcuts:tests_language_changelist")
         )
 
-        l1_checkbox = self.selenium.find_element(
-            By.CSS_SELECTOR, "input[name='_selected_action'][value='l1']"
+        l1_row = self.selenium.find_element(
+            By.CSS_SELECTOR, "#result_list > tbody > tr:nth-child(1)"
         )
-        l2_checkbox = self.selenium.find_element(
-            By.CSS_SELECTOR, "input[name='_selected_action'][value='l2']"
+        l2_row = self.selenium.find_element(
+            By.CSS_SELECTOR, "#result_list > tbody > tr:nth-child(2)"
         )
 
-        # On first trigger, "focus previous row" shortcut focuses last row/checkbox
+        # On first trigger, "focus previous row" shortcut focuses last row
         self.perform_shortcut(ChangeListShortcuts.FOCUS_PREV_ROW)
-        self.assertEqual(self.selenium.switch_to.active_element, l2_checkbox)
+        self.assertEqual(self.selenium.switch_to.active_element, l2_row)
 
         self.perform_shortcut(ChangeListShortcuts.FOCUS_PREV_ROW)
-        self.assertEqual(self.selenium.switch_to.active_element, l1_checkbox)
+        self.assertEqual(self.selenium.switch_to.active_element, l1_row)
 
     def test_shortcut_changelist_toggle_row_selection(self):
         from selenium.webdriver.common.by import By
@@ -360,8 +363,6 @@ class SeleniumTests(AdminSeleniumTestCase):
 
         # Mark l2
         self.perform_shortcut(ChangeListShortcuts.FOCUS_PREV_ROW)
-        self.assertEqual(self.selenium.switch_to.active_element, l2_checkbox)
-
         self.perform_shortcut(ChangeListShortcuts.TOGGLE_ROW_SELECTION)
         self.assertTrue(l2_checkbox.is_selected())
 
@@ -372,12 +373,39 @@ class SeleniumTests(AdminSeleniumTestCase):
         # Mark action toggle checkbox
         self.perform_shortcut(ChangeListShortcuts.FOCUS_PREV_ROW)
         self.perform_shortcut(ChangeListShortcuts.FOCUS_PREV_ROW)
-        self.assertEqual(self.selenium.switch_to.active_element, action_toggle_checkbox)
 
         self.perform_shortcut(ChangeListShortcuts.TOGGLE_ROW_SELECTION)
         self.assertTrue(action_toggle_checkbox.is_selected())
         self.assertTrue(l1_checkbox.is_selected())
         self.assertTrue(l2_checkbox.is_selected())
+
+    def test_shortcut_changelist_open_focused_row(self):
+        from selenium.webdriver.common.by import By
+
+        Language.objects.create(iso="l1")
+
+        self.selenium.get(
+            self.live_server_url
+            + reverse("test_admin_keyboard_shortcuts:tests_language_changelist")
+        )
+
+        l1_row = self.selenium.find_element(
+            By.CSS_SELECTOR, "#result_list > tbody > tr:nth-child(1)"
+        )
+
+        self.perform_shortcut(ChangeListShortcuts.FOCUS_NEXT_ROW)
+        self.perform_shortcut(ChangeListShortcuts.FOCUS_NEXT_ROW)
+        self.assertEqual(self.selenium.switch_to.active_element, l1_row)
+
+        with self.wait_page_loaded():
+            self.perform_shortcut(ChangeListShortcuts.OPEN_FOCUSED_ROW)
+        self.assertEqual(
+            self.selenium.current_url,
+            self.live_server_url
+            + reverse(
+                "test_admin_keyboard_shortcuts:tests_language_change", args=("l1",)
+            ),
+        )
 
     def test_shortcut_changelist_focus_actions_dropdown(self):
         from selenium.webdriver.common.by import By
