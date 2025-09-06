@@ -42,8 +42,12 @@
         }
     }
 
+    function isHeaderRow(row) {
+        return row.parentElement.tagName === "THEAD";
+    }
+
     function openFocusedRow() {
-        if (currentRow) {
+        if (currentRow && !isHeaderRow(currentRow)) {
             const firstLink = currentRow.querySelector("th a");
             if (firstLink) {
                 window.location.href = firstLink.href;
