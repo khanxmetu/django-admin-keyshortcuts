@@ -21,7 +21,7 @@ class ChangeListShortcuts:
     FOCUS_PREV_ROW = "k"
     FOCUS_NEXT_ROW = "j"
     TOGGLE_ROW_SELECTION = "x"
-    OPEN_FOCUSED_ROW = "o"
+    OPEN_FOCUSED_ROW = "Enter"
     FOCUS_ACTIONS_DROPDOWN = "a"
     FOCUS_SEARCH = "/"
 
@@ -128,13 +128,14 @@ class SeleniumTests(AdminSeleniumTestCase):
         # e.g. "Ctrl+S Alt+Shift+X" -> [["Ctrl", "S"], ["Alt", "Shift", "X"]]
         key_combos = [key_combo.split("+") for key_combo in shortcut.split(" ")]
 
-        # parse modifiers
+        # parse special keys
         special_keys = {
             "ctrl": Keys.CONTROL,
             "alt": Keys.ALT,
             "shift": Keys.SHIFT,
             "escape": Keys.ESCAPE,
             "mod": Keys.META if is_mac else Keys.CONTROL,
+            "enter": Keys.ENTER,
         }
         key_combos = [
             [special_keys.get(key.lower(), key) for key in combo]
