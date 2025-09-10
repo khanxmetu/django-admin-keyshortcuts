@@ -142,10 +142,18 @@ class SeleniumTests(AdminSeleniumTestCase):
             for combo in key_combos
         ]
 
-        # Temporary workaround to remove focus from textarea/input fields.
-        # Currently, Github hotkey prevents shortcuts
-        # from triggering when focused on textareas.
-        self.selenium.execute_script("document.activeElement.blur();")
+        # These are the shortcuts whose behavior depend on the focused element
+        shortcuts_dependent_on_focus = [
+            ChangeListShortcuts.TOGGLE_ROW_SELECTION,
+            ChangeListShortcuts.OPEN_FOCUSED_ROW,
+        ]
+
+        # If the shortcut is global, let it trigger regardless of focus
+        if shortcut not in shortcuts_dependent_on_focus:
+            # Temporary workaround to remove focus from textarea/input fields.
+            # Currently, Github hotkey prevents shortcuts
+            # from triggering when focused on textareas.
+            self.selenium.execute_script("document.activeElement.blur();")
 
         # perform the key combinations
         actions = ActionChains(self.selenium)
@@ -380,6 +388,13 @@ class SeleniumTests(AdminSeleniumTestCase):
         self.assertTrue(l1_checkbox.is_selected())
         self.assertTrue(l2_checkbox.is_selected())
 
+        checked_state = l2_checkbox.is_selected()
+        # remove focus from row
+        self.selenium.execute_script("document.activeElement.blur();")
+        # "toggle row selection" shortcut shouldn't work when focus is not on row
+        self.perform_shortcut(ChangeListShortcuts.TOGGLE_ROW_SELECTION)
+        self.assertEqual(l2_checkbox.is_selected(), checked_state)
+
     def test_shortcut_changelist_open_focused_row(self):
         from selenium.webdriver.common.by import By
 
@@ -406,6 +421,24 @@ class SeleniumTests(AdminSeleniumTestCase):
             + reverse(
                 "test_admin_keyboard_shortcuts:tests_language_change", args=("l1",)
             ),
+        )
+
+        self.selenium.get(
+            self.live_server_url
+            + reverse("test_admin_keyboard_shortcuts:tests_language_changelist")
+        )
+
+        self.perform_shortcut(ChangeListShortcuts.FOCUS_PREV_ROW)
+        # remove focus from row
+        self.selenium.execute_script("document.activeElement.blur();")
+        # "open focused row" shortcut shouldn't work when focus is not on row
+        self.perform_shortcut(ChangeListShortcuts.OPEN_FOCUSED_ROW)
+        # assert that no new page loaded
+        self.selenium.implicitly_wait(1)
+        self.assertEqual(
+            self.selenium.current_url,
+            self.live_server_url
+            + reverse("test_admin_keyboard_shortcuts:tests_language_changelist"),
         )
 
     def test_shortcut_changelist_focus_actions_dropdown(self):

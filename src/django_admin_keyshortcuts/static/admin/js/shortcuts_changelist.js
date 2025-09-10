@@ -36,9 +36,11 @@
     }
 
     function selectCheckbox() {
-        if (currentRow) {
+        if (currentRow && document.activeElement === currentRow) {
             const currentCheckbox = currentRow.querySelector("#action-toggle, .action-select");
-            currentCheckbox.click();
+            if (currentCheckbox) {
+                currentCheckbox.click();
+            }
         }
     }
 
@@ -47,7 +49,7 @@
     }
 
     function openFocusedRow() {
-        if (currentRow && !isHeaderRow(currentRow)) {
+        if (currentRow && !isHeaderRow(currentRow) && document.activeElement === currentRow) {
             const firstLink = currentRow.querySelector("th a");
             if (firstLink) {
                 window.location.href = firstLink.href;
