@@ -5,6 +5,8 @@ A Django package that adds keyboard shortcuts to the Django Admin interface for 
 A static preview of Django Admin with Keyboard Shortcuts is available at:  
 https://khanxmetu.github.io/django-admin-keyshortcuts-demo/
 
+Try it out and then provide feedback on the forum thread: [Feedback: django admin keyboard shortcuts](https://forum.djangoproject.com/t/feedback-django-admin-keyboard-shortcuts/42783)
+
 ## Setup
 Install from pip:  
 `pip install django-admin-keyshortcuts`
